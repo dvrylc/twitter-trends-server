@@ -34,6 +34,4 @@ api.stream('statuses/sample', stream => {
 });
 
 // Bind server to port
-app.listen(process.env.PORT, () => {
-  console.log(`Listening on port ${process.env.PORT}`);
-});
+app.listen(process.env.PORT || 8000);
