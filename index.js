@@ -14,7 +14,8 @@ function handler (req, res) {
 api.stream('statuses/sample', stream => {
   // Start socket.io server
   io.on('connection', socket => {
-    console.log(`[CONNECT]\t\t${socket.conn.remoteAddress}`);
+    const clientIP = socket.client.request.headers['x-forwarded-for'] || socket.conn.remoteAddress;
+    console.log(`[CONNECT]\t\t${clientIP}`);
     
     // Set unlimited clients
     socket.setMaxListeners(0);
@@ -33,7 +34,7 @@ api.stream('statuses/sample', stream => {
     
     // Handle disconnect
     socket.on('disconnect', () => {
-      console.log(`[DISCONNECT]\t${socket.conn.remoteAddress}`);
+      console.log(`[DISCONNECT]\t${clientIP}`);
     });
   });
 });
