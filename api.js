@@ -1,11 +1,13 @@
 // External imports
 const Twitter = require('twitter');
 
-// Internal imports
-const secrets = require('./secrets.json');
-
 // Create client
-const client = new Twitter(secrets.twitter);
+const client = new Twitter({
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_SECRET
+});
 
 // Export
 module.exports = client;
