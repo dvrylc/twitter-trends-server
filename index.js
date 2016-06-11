@@ -20,10 +20,19 @@ api.stream('statuses/sample', stream => {
     // Set unlimited clients
     socket.setMaxListeners(0);
     
-    // Emit incoming tweets if tweet is not null
+    // Emit incoming tweets
     stream.on('data', tweet => {
-      if (tweet.text) {
-        socket.emit('tweet', tweet.text);
+      // Ignore empty tweets and retweets
+      if (tweet.text && !tweet.retweeted_status) {
+        const text = tweet.text;
+        const hashtags = tweet.entities.hashtags.map(h => h.text);
+        const url = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`;
+        
+        socket.emit('tweet', {
+          text,
+          hashtags,
+          url
+        });
       }
     });
     
